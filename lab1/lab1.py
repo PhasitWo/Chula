@@ -1,5 +1,6 @@
 import math
 import matplotlib.pyplot as plt
+import time
 
 operationCNT = 0
 
@@ -137,14 +138,14 @@ testcase = [
     (789176724879, 659151396733), (659117416437, 946585181391), (653184188245, 758331017965), (841818235337, 767318488245), (953525754641, 658518571823)
 ]
 
-# test
-def test(testcase, gcd_fucntion):
+# test1
+def test1(testcase, gcd_function):
     global operationCNT
     average_cnt = []
     temp = 0
     for index, case in enumerate(testcase):
         operationCNT = 0
-        gcd_fucntion(case[0], case[1])
+        gcd_function(case[0], case[1])
         if (index+1) % 5 == 0:
             average_cnt.append(temp/5)
             temp = 0
@@ -152,21 +153,18 @@ def test(testcase, gcd_fucntion):
             temp += operationCNT
     return average_cnt
 
-average_cnt_method1 = test(testcase, findGCD1)
+average_cnt_method1 = [7.2, 5.6, 8.8, 7.8, 9.4, 10.2, 8, 8.8, 10.6, 8.8, 8]
 average_cnt_method2 = [8.4, 7.2, 10.4, 9.4, 11, 11.8, 9.6, 10.4, None, None, None]
-average_cnt_method3 = test(testcase, findGCD3)
+average_cnt_method3 = [3, 5.4, 7.6, 8.8, 11.6, 9.4, 13.4, 17.4, 16.4, 18, 18.8]
 
-print(average_cnt_method1)
-print(average_cnt_method3)
-
-# graph
+# graph -> operation count and digits graph
 x = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12]
 plt.plot(x, average_cnt_method1, color='r', label='method1 Naive')
 plt.plot(x, average_cnt_method2, color='b', label='method2 Sieve')
 plt.plot(x, average_cnt_method3, color='g', label='method3 Recursion')
   
 # Naming the x-axis, y-axis and the whole graph
-plt.xlabel("digit")
+plt.xlabel("Input Digits")
 plt.ylabel("operation count")
   
 # Adding legend, which helps us recognize the curve according to it's color
@@ -174,3 +172,37 @@ plt.legend()
   
 # To load the display window
 plt.show()
+
+# # test2
+def test2(testcase, gcd_function):
+    average_time = []
+    temp = 0
+    for index, case in enumerate(testcase):
+        start = time.perf_counter_ns()
+        gcd_function(case[0], case[1])
+        end = time.perf_counter_ns()
+        temp += end - start
+        if (index+1) % 5 == 0:
+            average_time.append(temp/5)
+            temp = 0
+    return average_time
+
+# average_cnt_method1 = [2020, 1840, 480, 460, 760, 1560, 3740, 13980, 30620, 269400, 452020]
+# average_cnt_method2 = [520, 860, 980, 1100, 1720, 1500, 1200, 1820, None, None, None]
+# average_cnt_method3 = [100, 60, 100, 80, 120, 100, 140, 160, 180, 160, 200]
+
+# # graph -> time used (nano sec) and digits graph
+# x = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12]
+# plt.plot(x, average_cnt_method1, color='r', label='method1 Naive')
+# plt.plot(x, average_cnt_method2, color='b', label='method2 Sieve')
+# plt.plot(x, average_cnt_method3, color='g', label='method3 Recursion')
+  
+# # Naming the x-axis, y-axis and the whole graph
+# plt.xlabel("Input Digits")
+# plt.ylabel("Time used (nano sec)")
+# plt.axis([0, 12, 0, 1e04])
+# # Adding legend, which helps us recognize the curve according to it's color
+# plt.legend()
+  
+# # To load the display window
+# plt.show()
