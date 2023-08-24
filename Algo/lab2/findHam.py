@@ -87,7 +87,26 @@ testcase4 = [
     |   /          \   |
    (3)----------------(2)
 """
+
+extra = [
+[0, 1, 1, 0, 0, 0],
+[0, 0, 0, 0, 0, 0],
+[0, 1, 0, 0, 0, 0],
+[0, 0, 1, 0, 0, 0],
+[0, 0, 0, 1, 0, 0],
+[0, 0, 0, 0, 1, 0]
+]
+def matrix_from_file(file_path):
+    result = []
+    file = open(file_path,"r")
+    index = 0
+    for line in file:
+        result.append([])
+        for node in line.split():
+            result[index].append(int(node))
+        index += 1
+    return result   
 # test
-for k, v in findHam(testcase4).items():
+for k, v in findHam(matrix_from_file("/Users/phasit/Downloads/lab/lab2/Lab 2 test case/1.Regular/2.1.7.txt")).items():
     print(k,":")
     print('\n'.join(str(p) for p in v))
