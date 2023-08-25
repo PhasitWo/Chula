@@ -10,11 +10,11 @@ def displayCustomGrayLevel(image:IMG, levels:int):
             old = image.getpixel((y,x))
             new = (round(old/max_level * new_level))/new_level*max_level
             image.putpixel((y,x), round(new))
-    image.save(f"ImageProcessing/assign1/q1/fruit{levels}levels.jpg")
+    image.save(f"ImageProcessing/assign1/q1/flower{levels}levels.jpg")
 
 
-img = Image.open("ImageProcessing/assign1/sample/fruit.jpg")
-displayCustomGrayLevel(img, 4)
+img = Image.open("ImageProcessing/assign1/sample/flower.jpg")
+displayCustomGrayLevel(img, 2)
 displayCustomGrayLevel(img, 64)
 displayCustomGrayLevel(img, 128)
 displayCustomGrayLevel(img, 256)
