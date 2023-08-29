@@ -60,11 +60,8 @@ def solve_BF(array:[], k):
                         recur(g)
                         break
                 if not found_g:
-                    all_solution.append(solution.copy())
-                    paired[start] = False
-                    paired[index] = False
-                    solution.pop()
-                    continue
+                    all_solution.append(solution.copy()) # save this solution
+                # roll back 1 step and continue finding other Passenger for this Grab
                 paired[start] = False
                 paired[index] = False
                 solution.pop()
