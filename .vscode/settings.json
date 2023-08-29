@@ -1,3 +1,8 @@
 {
-    "dotnet.defaultSolution": "Algo/lab1/cs/cs.sln"
+    "dotnet.defaultSolution": "Algo/lab1/cs/cs.sln",
+    "files.associations": {
+        "unistd.h": "c",
+        "stdlib.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }
