@@ -1,41 +1,4 @@
-# brute force
-# def solve_BF(array:[], k):
-#     paired = [False] * len(array)
-#     solution = []
-#     all_solution = []
-
-#     def recur(start):
-#         jump = False
-#         if start == (len(array) - 1):
-#             all_solution.append(solution.copy())
-#             return
-#         for index in range(start+1, len(array)):
-#             value = array[index]
-#             if paired[start] and not paired[index]:
-#                 jump = True
-#                 recur(index)
-#             elif (array[start] != value and (index - start) <= k
-#                 and not paired[index]):
-#                 solution.append((start, index))
-#                 paired[start] = True
-#                 paired[index] = True
-#                 paired_with = index
-#         if not paired[start] or not jump:
-#             recur(start+1)
-#         if paired[start]:
-#             paired[start] = False
-#             paired[paired_with] = False
-#             solution.pop()
-
-#     recur(0)
-
-#     # maximum = len(max(all_solution))
-#     # cnt = 0
-#     # for sol in all_solution:
-#     #     if len(sol) == maximum:
-#     #         cnt += 1
-#     return all_solution
-
+# brute force : Time Complexity could be O(min(G's, P's)^max(G's, P's))
 def solve_BF(array:[], k):
     paired = [False] * len(array)
     solution = []
@@ -85,10 +48,77 @@ def solve_BF(array:[], k):
     # for sol in all_solution:
     #     if len(sol) == maximum:
     #         cnt += 1
+    all_solution.sort(key=lambda x:len(x), reverse=True)
     return all_solution
 
-            # 0    1    2    3    4
-testcase1 = ["G", "P", "P", "G", "P"]
-testcase2 = ["P", "P", "G", "G", "P", "G"]
-testcase3 = ["G", "P", "G", "P", "P", "G"]
-[print(i) for i in solve_BF(testcase1, 2)]
+# greedy : Time Complexity could be O(nlogn)???
+def solve_greedy(array, k):
+    solution = []
+    paired = [False] * len(array)
+    for i1 in range(len(array)):
+        if paired[i1]:
+            continue
+        v1 = array[i1]
+        for i2 in range(i1+1, i1+1+k):
+            if i2 >= len(array): # in case index out of range
+                break
+            v2 = array[i2]
+            if v1 != v2 and not paired[i2]:
+                solution.append((i1, i2))
+                paired[i1], paired[i2] = True, True
+                break
+
+    return solution
+
+def read_file(path:str) -> tuple:
+    with open(path, "r") as openfile:
+        array = [s for s in openfile.readline().strip()]
+        k = int(openfile.readline().strip())
+    return (array, k)
+
+#             # 0    1    2    3    4    5
+# testcase1 = ["G", "P", "P", "G", "P"]
+# testcase2 = ["P", "P", "G", "G", "P", "G"]
+# testcase3 = ["G", "P", "G", "P", "P", "G"]
+# # [print(i) for i in solve_greedy(testcase1, 2)]
+# print(solve_greedy(testcase3, 3))
+
+normal_list = ["3.1.1", "3.1.2","3.1.3","3.2.1","3.2.2","3.2.3","3.3.1","3.3.2", "3.3.3"]
+extra_list = ["3.4.1", "3.4.2", "3.4.3",  "3.4.4", "3.4.5", "3.5.1", "3.5.2", "3.5.3",]
+for case in normal_list:
+    inp = read_file(f"Algo/lab3/Lab 3 test case/normal/{case}.txt")
+    print(case)
+    print("Bforce:",len(solve_BF(inp[0], inp[1])[0]))
+    print("greedy:",len(solve_greedy(inp[0], inp[1])))
+
+
+# inp = read_file(f"Algo/lab3/Lab 3 test case/Extra/3.4.2.txt")
+# print("greedy:",solve_greedy(inp[0], inp[1]))
+# # print("Bforce:", len(max(solve_BF(inp[0], inp[1]))))
+# [print(i) for i in solve_BF(inp[0], inp[1])]
+
+
+
+
+
+
+# wrong greedy --> not suitable with this problem
+# g_pos and p_pos with the same index doesn't mean both are closest to each other
+    # grab_pos = []
+    # passenger_pos = []
+    # solution = []
+    # for index, value in enumerate(array): 
+    #     if value == "G":
+    #         grab_pos.append(index)
+    #     else:
+    #         passenger_pos.append(index)
+    # # sort
+    # grab_pos.sort()
+    # passenger_pos.sort()
+    # print("G pos:",grab_pos)
+    # print("P pos:",passenger_pos)  
+
+    # maximum = min(len(grab_pos), len(passenger_pos))
+    # for i in range(maximum):
+    #     if abs(grab_pos[i] - passenger_pos[i]) <= k:
+    #         solution.append((grab_pos[i], passenger_pos[i]))
