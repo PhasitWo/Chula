@@ -29,4 +29,7 @@ def test(choice:int, skip_brute_force=False):
         print("greedy:",len(solve_greedy(inp[0], inp[1])))
 
 NORMAL = 0;EXTRA = 1;BIG = 2
-test(BIG, skip_brute_force=True)
+# test(NORMAL, skip_brute_force=True)
+
+inp = read_file(f"Algo/lab3/Lab 3 test case/Extra/3.5.1.txt")
+print(solve_greedy(inp[0], inp[1]))
