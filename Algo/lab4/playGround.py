@@ -5,16 +5,16 @@ class const:
     best = None
 
 def numWays(amount, denoms:list) -> int:
-    denoms.sort(reverse=False)
+    denoms.sort(reverse=True)
     solution = []
     memmo = {}
 
     def recur(amount, denoms:list, focus_denom):
-        # avoid re-computation
-        cache = memmo.get((amount, focus_denom))
-        if cache != None:
-            print("OVERLAP", f"({amount},{denoms[focus_denom:]}) --> {cache}")
-            return cache
+        # # avoid re-computation
+        # cache = memmo.get((amount, focus_denom))
+        # if cache != None:
+        #     print("OVERLAP", f"({amount},{denoms[focus_denom:]}) --> {cache}")
+        #     return cache
         # base case
         if amount == 0: # cannot include any coin anymore
             if len(solution) < const.min:
@@ -42,4 +42,4 @@ def numWays(amount, denoms:list) -> int:
     print(const.best)
     return min(out1, out2)
 
-print(numWays(6, [1,3,4]))
+print(numWays(100, [1,3,4,6]))
