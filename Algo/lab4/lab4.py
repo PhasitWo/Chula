@@ -37,49 +37,42 @@ def numWays(amount, denoms:list) -> int:
     print(all_solution)
     return result
 
-# modify above method, return the number of coin in the solution.
-# choose minimum amount of coin in the solution between include and exclude case
-import sys
-INT_MAX = sys.maxsize
-class const:
-    min = INT_MAX
-    best = None
 
+# modify above method, return the solution that has minimum coin.
+# choose best solution between INCLUDE and EXCLUDE case (minimum coin)
 def minCoin(amount, denoms:list) -> int:
-    denoms.sort(reverse=True)
-    solution = []
     memmo = {}
-
     def recur(amount, denoms:list, focus_denom):
-        # # avoid re-computation
-        # cache = memmo.get((amount, focus_denom))
-        # if cache != None:
-        #     print("OVERLAP", f"({amount},{denoms[focus_denom:]}) --> {cache}")
-        #     return cache
-        # base case
+        # avoid re-computation
+        cache = memmo.get((amount, focus_denom))
+        if cache != None:
+            print("OVERLAP", (amount, focus_denom))
+            return cache
         if amount == 0: # cannot include any coin anymore
-            if len(solution) < const.min:
-                print("FOUND MIN!!!!!!!!!!!", solution)
-                const.min = len(solution)
-                const.best = solution.copy()
-            return len(solution)
+            return []
         if amount < 0 or focus_denom >= len(denoms): # amount is negative or no more coin left to consider
-            return INT_MAX
+            return None
         # include denoms[focus_denom] coin
-        solution.append(denoms[focus_denom])
         out1 = recur(amount - denoms[focus_denom], denoms, focus_denom)
-        solution.pop()
+        if out1 != None:
+            out1 += [denoms[focus_denom]]
         # exclude denoms[focus_denom] coin
         out2 = recur(amount, denoms, focus_denom + 1)
-        memmo.update({(amount, focus_denom):min(out1, out2)})
-        return min(out1, out2)
+        # compare both case
+        res = None
+        if out1 == None and out2 == None:
+            res = None
+        elif out1 != None and out2 != None:
+            res = min(out1, out2, key=lambda x : len(x))
+        else:
+            res = out1 if out1 != None else out2
+        # save in memmo
+        saved_value = res.copy() if res != None else None
+        memmo.update({(amount, focus_denom):saved_value})
+        return res
     
     # initial call
-    solution.append(denoms[0])
-    out1 = recur(amount - denoms[0], denoms, 0)
-    solution.pop()
-    out2 = recur(amount, denoms, 1)
-    print(const.best)
-    return min(out1, out2)
-
+    denoms.sort(reverse=True)
+    res = recur(amount, denoms, 0)
+    return res
 print(minCoin(100, [1,3,4,6]))
