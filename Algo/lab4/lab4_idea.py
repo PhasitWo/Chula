@@ -32,43 +32,47 @@ def numWays2(amount, denoms:list) -> int:
     
     result += recur(amount, denoms, 0)
     return result
+# numWays to find coin change = numWays to find coin change by INCLUDING current coin + numWays to find coin change by EXCLUDING current coin 
+# numWays(amount, denoms, focus_denom) = numWays(amount-denoms[focus_denom], denoms, focus_denom) + numWays(amount, denoms, focus_denom+1)
+# When avoiding repeated recursive call, we can only get the number of all solution right, but not able to track the solution of repeated call.
+# bad implementation --> returning cnt instead of sub solution cause problem to track the solution. 
+#                    --> recursive call solutions have dependency on upper layer
+# เพราะไปคิดวิธีแบบโจทย์ของ greedy/brute force คือ นำตัวเลข focus_denom ไปใส่ sol แล้วค่อยเรียก recur (ทรง permutaion) ทำให้ผิดหลัก concept Dynamic Programming 
+# ที่ recur ชั้นล่างต้องประกอบกันเป็นชั้นบน ไม่ใช่ชั้นบนมามีผลกับคำตอบชั้นล่าง
+def numWays(amount, denoms:list) -> int:
+    result = 0
+    all_solution = []
+    solution = []
+    memmo = {}
 
-# รุ่นพี่ minCoin idea, so slowwwwwww
-import sys
-class const:
-    best = []
-# m is size of coins array (number of different coins)
-def minCoins(coins, m, V):
-    const.best = []
-    sol = []
-    def recur(coins, m, V):
-        # base case
-        if (V == 0):
-            const.best.append(sol.copy())
+    def recur(amount, denoms:list, focus_denom):
+        # # avoid re-computation
+        # cache = memmo.get((amount, focus_denom))
+        # if cache != None:
+        #     print("OVERLAP")
+        #     return cache
+        cnt = 0
+        if amount == 0: # cannot include any coin anymore
+            all_solution.append(solution.copy())
+            return 1
+        if amount < 0 or focus_denom >= len(denoms): # amount is negative or no more coin left to consider
             return 0
-
-        # Initialize result
-        res = sys.maxsize
-
-        # Try every coin that has smaller value than V
-        for i in range(0, m):
-            if (coins[i] <= V):
-                sol.append(coins[i])
-                sub_res = recur(coins, m, V-coins[i])
-                sol.pop()
-                # Check for INT_MAX to avoid overflow and see if
-                # result can minimized
-                if (sub_res != sys.maxsize and sub_res + 1 < res):
-                    res = sub_res + 1
-                    # const.best = sol.copy()
-
-        return res
+        # include denoms[focus_denom] coin
+        solution.append(denoms[focus_denom])
+        cnt += recur(amount - denoms[focus_denom], denoms, focus_denom)
+        solution.pop()
+        # exclude denoms[focus_denom] coin
+        cnt += recur(amount, denoms, focus_denom + 1)
+        memmo.update({(amount, focus_denom):cnt})
+        return cnt
     
-    res = recur(coins, m, V)
-    print(len(const.best))
-    return res
-print(numWays2(50, [1, 5, 10, 20]))
-
+    # initial call
+    solution.append(denoms[0])
+    result += recur(amount - denoms[0], denoms, 0)
+    solution.pop()
+    result += recur(amount, denoms, 1)
+    print(all_solution)
+    return result
 
 # bad recursive!! each layer of recursive call has dependency on layer above it
 # choose minimum amount of coin in the solution between include and exclude case
@@ -114,3 +118,40 @@ def minCoin(amount, denoms:list) -> int:
     out2 = recur(amount, denoms, 1)
     print(const.best)
     return min(out1, out2)
+
+# รุ่นพี่ minCoin idea, so slowwwwwww
+import sys
+class const:
+    best = []
+# m is size of coins array (number of different coins)
+def minCoins(coins, m, V):
+    const.best = []
+    sol = []
+    def recur(coins, m, V):
+        # base case
+        if (V == 0):
+            const.best.append(sol.copy())
+            return 0
+
+        # Initialize result
+        res = sys.maxsize
+
+        # Try every coin that has smaller value than V
+        for i in range(0, m):
+            if (coins[i] <= V):
+                sol.append(coins[i])
+                sub_res = recur(coins, m, V-coins[i])
+                sol.pop()
+                # Check for INT_MAX to avoid overflow and see if
+                # result can minimized
+                if (sub_res != sys.maxsize and sub_res + 1 < res):
+                    res = sub_res + 1
+                    # const.best = sol.copy()
+
+        return res
+    
+    res = recur(coins, m, V)
+    print(len(const.best))
+    return res
+
+print(numWays(25, [3, 5, 7, 9]))
