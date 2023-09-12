@@ -17,7 +17,7 @@ def local_histogram_equalize(image:IMG, neighbor_width, neighbor_height, constan
             Hk[r] += 1
     Pk = [h/(image.height*image.width) for h in Hk]
     global_mean = sum([k*Pk[k] for k in range(256)])
-    global_variance = sum([math.pow((k-global_mean), 2) * Pk[k] for k in range(256)])
+    global_variance = math.sqrt(sum([math.pow((k-global_mean), 2) * Pk[k] for k in range(256)]))
 
     def histogram_equalize(coordinate:tuple, neighbor_width, neighbor_height, constants:tuple, global_mean, global_variance):
         x, y = coordinate
@@ -40,7 +40,7 @@ def local_histogram_equalize(image:IMG, neighbor_width, neighbor_height, constan
 
         # local statistic
         local_mean = sum([k*Pk[k] for k in range(256)])
-        local_variance = sum([math.pow((k-local_mean), 2) * Pk[k] for k in range(256)])
+        local_variance = math.sqrt(sum([math.pow((k-local_mean), 2) * Pk[k] for k in range(256)]))
 
         # Conditions
         old_value = image.getpixel((y, x))
@@ -54,20 +54,18 @@ def local_histogram_equalize(image:IMG, neighbor_width, neighbor_height, constan
             # convert new_value to 256 gray level
             new_value = round(Sk[old_value] * 255)
 
-            # # apply to image
+            # apply to image
             new_image.putpixel((y,x), new_value)
 
         else:
             new_image.putpixel((y,x), old_value)
         
-
     # driver
     for x in range(image.height):
         for y in range(image.width):
             histogram_equalize((x, y), neighbor_width, neighbor_height, constants, global_mean, global_variance)
     
-    new_image.show()
-    # new_image.save(f"ImageProcessing/assign2/q3_output.jpg")
+    new_image.save(f"ImageProcessing/assign2/q3_output.jpg")
    
 img = Image.open("ImageProcessing/assign2/assignment2_image1.jpg")
-local_histogram_equalize(img, 7, 7, (0.4, 0.001, 0.04))
+local_histogram_equalize(img, 7, 7, (0.4, 0.03, 0.4))
