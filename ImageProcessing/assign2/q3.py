@@ -17,9 +17,9 @@ def local_histogram_equalize(image:IMG, neighbor_width, neighbor_height, constan
             Hk[r] += 1
     Pk = [h/(image.height*image.width) for h in Hk]
     global_mean = sum([k*Pk[k] for k in range(256)])
-    global_variance = math.sqrt(sum([math.pow((k-global_mean), 2) * Pk[k] for k in range(256)]))
+    global_sd = math.sqrt(sum([math.pow((k-global_mean), 2) * Pk[k] for k in range(256)]))
 
-    def histogram_equalize(coordinate:tuple, neighbor_width, neighbor_height, constants:tuple, global_mean, global_variance):
+    def histogram_equalize(coordinate:tuple, neighbor_width, neighbor_height, constants:tuple, global_mean, global_sd):
         x, y = coordinate
         k0, k1, k2 = constants
         x_upper = clamp(round(x + (neighbor_height-1)/2), MAX_X)
@@ -44,7 +44,7 @@ def local_histogram_equalize(image:IMG, neighbor_width, neighbor_height, constan
 
         # Conditions
         old_value = image.getpixel((y, x))
-        if (local_mean < k0*global_mean) and (k1*global_variance <= local_variance) and (local_variance <= k2*global_variance):
+        if (local_mean < k0*global_mean) and (k1*global_sd <= local_variance) and (local_variance <= k2*global_sd):
             # compute Sk
             Sk = [0 for _ in range(256)]
             Sk[0] = Pk[0]
@@ -63,9 +63,13 @@ def local_histogram_equalize(image:IMG, neighbor_width, neighbor_height, constan
     # driver
     for x in range(image.height):
         for y in range(image.width):
-            histogram_equalize((x, y), neighbor_width, neighbor_height, constants, global_mean, global_variance)
+            histogram_equalize((x, y), neighbor_width, neighbor_height, constants, global_mean, global_sd)
     
-    new_image.save(f"ImageProcessing/assign2/q3_output.jpg")
+    new_image.save(f"ImageProcessing/assign2/q3_output_{neighbor_width}x{neighbor_height}.jpg")
    
 img = Image.open("ImageProcessing/assign2/assignment2_image1.jpg")
-local_histogram_equalize(img, 7, 7, (0.4, 0.03, 0.4))
+local_histogram_equalize(img, 11, 11, (0.4, 0.03, 0.2))
+
+# 3x3   --> 0.4, 0.02, 0.3
+# 7x7   --> 0.4, 0.03, 0.2
+# 11x11 --> 0.4, 0.03, 0.2 
