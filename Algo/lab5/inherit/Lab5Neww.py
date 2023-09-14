@@ -1,13 +1,5 @@
 import numpy as np
 
-#input = [[0,0],[1,0],[2,1],[1,2],[0,2]]
-#input = [[0,0],[2,-1],[1,0],[2,1]]
-#input = [[0,0],[2,0],[1,1.5],[2,2],[0,2]]
-#input = [[1,0],[2,1],[1,2]] # print cost only
-#input = [[1,0],[2,1]]
-#input = [[1,0]]
-#input = [[0,0],[2,2],[1,3.5],[2,4],[0,4],[0,2]]
-
 def readfile(path): 
     inp = []
     vector=[]
@@ -85,20 +77,27 @@ def findShortDiagonal(input,check) :
             minn += findShortDiagonal(input,check)    
         return minn
     
-# input,numOfPoint=readfile("1.1.txt")
-# print("input:",input)
-# input2 = []
-# for e in input:
-#     input2.append(e)
+# input = [[0,0],[1,0],[2,1],[1,2],[0,2]]
+# input = [[0,0],[2,-1],[1,0],[2,1]]
+# input = [[0,0],[2,0],[1,1.5],[2,2],[0,2]]
+# input = [[1,0],[2,1],[1,2]] # print cost only
+# input = [[1,0],[2,1]]
+# input = [[1,0]]
+# input = [[0,0],[2,2],[1,3.5],[2,4],[0,4],[0,2]]
+input = [[1, 0], [4, 3], [5, 7], [1, 10], [0, 8], [0, 0]]
+print("input:",input)
+input2 = []
+for e in input:
+    input2.append(e)
     
 
-# sumCost = findShortDiagonal(input,False)
-# if sumCost!= 0 or sumCost == 0 and len(input)==3:            
-#     cost2=0
-#     for i in range(len(input2)-1) :
-#         cost2 += cost(input2[i],input2[i+1])
-#     sumCost +=  cost2 + cost(input2[len(input2)-1],input2[0]) 
-#     print(sumCost)
-# else :
-#     print("don't have triangle")
+sumCost = findShortDiagonal(input,False)
+if sumCost!= 0 or sumCost == 0 and len(input)==3:            
+    cost2=0
+    for i in range(len(input2)-1) :
+        cost2 += cost(input2[i],input2[i+1])
+    sumCost +=  cost2 + cost(input2[len(input2)-1],input2[0]) 
+    print(sumCost)
+else :
+    print("don't have triangle")
     

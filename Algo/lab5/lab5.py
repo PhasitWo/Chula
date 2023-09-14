@@ -1,13 +1,9 @@
-# Recursive implementation for minimum
-# cost convex polygon triangulation
 from math import sqrt
 import os, sys
-from Lab5Neww import findShortDiagonal
-from Lab5Neww import cost as pcost
 MAX = sys.maxsize
  
 def dist(p1, p2):
-    return sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) + \
+    return sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) +
                 (p1[1] - p2[1])*(p1[1] - p2[1]))
  
 def cost(points, i, j, k):
@@ -32,6 +28,7 @@ def mTC(points, i, j):
     # Initialize result as infinite
     res = MAX
     best_k = -1
+
     # Find minimum triangulation by considering all
     for k in range(i + 1, j):
         out = min(res, (mTC(points, i, k) + mTC(points, k, j) + cost(points, i, k, j)))
@@ -55,15 +52,17 @@ def read_file(path:str) -> tuple:
 
 # driver
 BASE_PATH = "Algo/lab5/testcase/"
-# test_case = os.listdir(BASE_PATH)
-# test_case.sort(key=lambda x : float(x.strip(".txt").replace(".", "").replace("Extra", "")))
-# for case in test_case:
-#     vertex_cnt, vertexs = read_file(BASE_PATH + case)
-#     print(case)
-#     print(mTC(vertexs, 0, len(vertexs) - 1))
-#     print("_"*10)
-cnt, vertexs = read_file(BASE_PATH + "0.txt")
-print(mTC(vertexs, 0, len(vertexs) - 1))
+test_case = os.listdir(BASE_PATH)
+test_case.sort(key=lambda x : float(x.strip(".txt").replace("Extra", "")))
+for case in test_case:
+    vertex_cnt, vertexs = read_file(BASE_PATH + case)
+    print(case)
+    print(mTC(vertexs, 0, len(vertexs) - 1))
+    memmo = {}
+    print("_"*10)
+
+# cnt, vertexs = read_file(BASE_PATH + "0.txt")
+# print(mTC(vertexs, 0, len(vertexs) - 1))
 
 # numOfPoint,input=read_file(BASE_PATH + "0.txt")
 # print("input:",input)
