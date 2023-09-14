@@ -1,24 +1,6 @@
 from math import sqrt
 import os, sys
 MAX = sys.maxsize
- 
-def extract_diagonals(vertexs, triangles):
-    diagonals = []
-    def check(x, y):
-        if x == len(vertexs) - 1 and y == 0:
-            return
-        elif abs(x - y) == 1:
-            return
-        elif (y, x) in diagonals: # duplicate
-            return
-        diagonals.append((x, y))
-        
-    for i in range(0, len(triangles), 3):
-        i1, i2, i3 = triangles[i], triangles[i+1], triangles[i+2]
-        check(i1, i2)
-        check(i2, i3)
-        check(i3, i1)
-    return diagonals
     
 def dist(p1, p2):
     return sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) +
@@ -66,24 +48,41 @@ def read_file(path:str) -> tuple:
             x, y = map(float, item.strip().split())
             vertexs.append([x, y])
     return vertex_cnt, vertexs
+# util
+def extract_diagonals(vertexs, triangles):
+    diagonals = []
+    def check(x, y):
+        if x == len(vertexs) - 1 and y == 0:
+            return
+        elif abs(x - y) == 1:
+            return
+        elif (vertexs[y], vertexs[x]) in diagonals: # duplicate
+            return
+        diagonals.append((vertexs[x], vertexs[y]))
+        
+    for i in range(0, len(triangles), 3):
+        i1, i2, i3 = triangles[i], triangles[i+1], triangles[i+2]
+        check(i1, i2)
+        check(i2, i3)
+        check(i3, i1)
+    return diagonals
 
 # driver
 BASE_PATH = "Algo/lab5/testcase/"
-test_case = os.listdir(BASE_PATH)
-test_case.sort(key=lambda x : float(x.strip(".txt").replace("Extra", "")))
-for case in test_case:
-    cnt, vertexs = read_file(BASE_PATH + case)
-    print(case)
-    triangles = mTC(vertexs, 0, len(vertexs) - 1)
-    print("cost:",round(cost(vertexs, triangles), 4))
-    print("triangles:", triangles)
-    print("diagonals:", extract_diagonals(vertexs, triangles))
-    memmo = {} # clear cache
-    print("_"*10)
+# test_case = os.listdir(BASE_PATH)
+# test_case.sort(key=lambda x : float(x.strip(".txt").replace("Extra", "")))
+# for case in test_case:
+#     cnt, vertexs = read_file(BASE_PATH + case)
+#     print(case)
+#     triangles = mTC(vertexs, 0, len(vertexs) - 1)
+#     print("cost:",round(cost(vertexs, triangles), 4))
+#     print("triangles:", triangles)
+#     print("diagonals:", extract_diagonals(vertexs, triangles))
+#     memmo = {} # clear cache
+#     print("_"*10)
 
-
-# cnt, vertexs = read_file(BASE_PATH + "0.txt")
+# from playground import draw_polygon
+# cnt, vertexs = read_file(BASE_PATH + "2.1.txt")
 # triangles = mTC(vertexs, 0, len(vertexs) - 1)
-# print(round(cost(vertexs, triangles), 4))
-# print(extract_diagonals(vertexs, triangles))
+# draw_polygon(vertexs, triangles, extract_diagonals(vertexs, triangles))
 

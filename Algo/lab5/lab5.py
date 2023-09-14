@@ -21,20 +21,16 @@ def mTC(points, i, j):
         return 0
     
     # Cache
-    cache = memmo.get((i, j))
-    if cache != None:
-        return cache
+    if (i, j) in memmo:
+        return memmo.get((i, j))
 
     # Initialize result as infinite
     res = MAX
-    best_k = -1
 
     # Find minimum triangulation by considering all
     for k in range(i + 1, j):
-        out = min(res, (mTC(points, i, k) + mTC(points, k, j) + cost(points, i, k, j)))
-        if out != res:
-            best_k = k
-        res = out
+        res = min(res, (mTC(points, i, k) + mTC(points, k, j) + cost(points, i, k, j)))
+        
     res = round(res, 4)
     memmo.update({(i, j):res})
     return res
