@@ -1,10 +1,10 @@
 from math import sqrt
 import os, sys
-MAX = sys.maxsize
- 
+MAX = sys.maxsize 
+
 def dist(p1, p2):
-    return sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) +
-                (p1[1] - p2[1])*(p1[1] - p2[1]))
+    return sqrt((p1[0] - p2[0])**2 +
+                (p1[1] - p2[1])**2)
  
 def cost(points, i, j, k):
     p1 = points[i]
@@ -22,17 +22,19 @@ def mTC(points, i, j):
     
     # Cache
     if (i, j) in memmo:
-        return memmo.get((i, j))
+        return memmo.get((i, j))[0]
 
     # Initialize result as infinite
     res = MAX
-
+    best_k = -1
     # Find minimum triangulation by considering all
     for k in range(i + 1, j):
-        res = min(res, (mTC(points, i, k) + mTC(points, k, j) + cost(points, i, k, j)))
-        
-    res = round(res, 4)
-    memmo.update({(i, j):res})
+        out = min(res, (mTC(points, i, k) + mTC(points, k, j) + cost(points, i, k, j)))
+        if out != res:
+            best_k = k
+        res = out
+    # res = round(res, 4)
+    memmo.update({(i, j):(res,k)})
     return res
  
  # util
@@ -48,14 +50,13 @@ def read_file(path:str) -> tuple:
 
 # driver
 BASE_PATH = "Algo/lab5/testcase/"
-test_case = os.listdir(BASE_PATH)
-test_case.sort(key=lambda x : float(x.strip(".txt").replace("Extra", "")))
-for case in test_case:
-    vertex_cnt, vertexs = read_file(BASE_PATH + case)
-    print(case)
-    print(mTC(vertexs, 0, len(vertexs) - 1))
-    memmo = {}
-    print("_"*10)
+from playground import draw_polygon
+cnt, vertexs = read_file(BASE_PATH + "0.txt")
+triangles = mTC(vertexs, 0, len(vertexs) - 1)
+print("cost:", triangles)
+for k,v in memmo.items():
+    print(f"{k} -> {v}")
+
 
 # cnt, vertexs = read_file(BASE_PATH + "0.txt")
 # print(mTC(vertexs, 0, len(vertexs) - 1))

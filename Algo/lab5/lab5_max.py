@@ -42,11 +42,11 @@ def mTC(points, i, j):
         return memmo.get((i,j))
 
     # Initialize result as infinite
-    res = None
+    res = ()
     # ** let cost(None) = MAX **
     # Find minimum triangulation by considering all
     for k in range(i + 1, j):
-        res = min(res, (mTC(points, i, k) + (i, k, j) + mTC(points, k, j)), key=lambda x : cost(points, x))
+        res = max(res, (mTC(points, i, k) + (i, k, j) + mTC(points, k, j)), key=lambda x : cost(points, x))
 
     memmo.update({(i, j):res})
     return res
@@ -85,7 +85,7 @@ def sort_vertex(vertexs:list):
     print(vertexs)
 # driver
 BASE_PATH = "Algo/lab5/testcase/"
-# # test all
+# test all
 # test_case = os.listdir(BASE_PATH)
 # test_case.remove(".DS_Store")
 # test_case.sort(key=lambda x : float(x.strip(".txt").replace("Extra", "")))
@@ -103,13 +103,12 @@ BASE_PATH = "Algo/lab5/testcase/"
 
 
 
-
-# single test
+# # single test
 from playground import draw_polygon
 cnt, vertexs = read_file(BASE_PATH + "0.txt")
 vertexs = mysort(vertexs)
 triangles = mTC(vertexs, 0, len(vertexs) - 1)
-print("cost:",cost(vertexs, triangles), 4)
+print("cost:",round(cost(vertexs, triangles), 4))
 print("triangles:", triangles)
 print("diagonals:", extract_diagonals(vertexs, triangles))
 draw_polygon(vertexs, triangles, extract_diagonals(vertexs, triangles))
