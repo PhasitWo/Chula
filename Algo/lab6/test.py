@@ -1,15 +1,13 @@
-from graph import Graph, Vertex
-
-v1 = Vertex()
-v2 = Vertex()
-v3 = Vertex()
-g = Graph(3, 4)
-g.addVertex(v1)
-g.addVertex(v2)
-g.addVertex(v3)
-g.addRelation(1, 2, 1)
-g.addRelation(1, 3, 2)
-g.addRelation(2, 3, 1)
+# from graph import Graph, Vertex, Color
 
 
-print(g)
+# v1 = Vertex(1)
+# v2 = Vertex(2)
+# v3 = Vertex(3)
+# g = Graph(3, 4)
+# g.addRelation(1, 2, 2)
+# g.addRelation(1, 3, 1)
+
+for x in range(5):
+    pass
+print(x)

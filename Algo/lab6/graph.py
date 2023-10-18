@@ -6,9 +6,11 @@ class Color(Enum):
     WHITE = "#FFFFFF"
     GRAY = "#808080"
     BLACK = "#000000"
+    RED = "#FF0000"
 
 class Vertex:
-    def __init__(self):
+    def __init__(self, _id):
+        self.id = _id
         self.color = None
         self.d = INF
         self.f = INF
@@ -18,43 +20,52 @@ class Vertex:
     def connectTo(self, vertex):
         self.adj.append(vertex)
 
+    def __str__(self) -> str:
+        return str(self.id)
+
 class Graph:
     def __init__(self, vertex_cnt, road_cnt):
-        self.vertex_cnt = 0
+        self.vertex_cnt = vertex_cnt
         self.road_cnt = road_cnt
         self.vertices = []
-        for _ in range(vertex_cnt):
-            self.addVertex(Vertex())
+        for i in range(vertex_cnt):
+            self.addVertex(Vertex(i+1))
+
+    def getVertexById(self, _id):
+        for v in self.vertices:
+            if v.id == _id:
+                return v
 
     def addVertex(self, vertex:Vertex):
         self.vertices.append(vertex)
-        self.vertex_cnt += 1
 
-    def addRelation(self, vertex1_index, vertex2_index, type=1):
-        vertex1:Vertex = self.vertices[vertex1_index]
-        vertex2:Vertex = self.vertices[vertex2_index]
+    def addRelation(self, vertex1_id, vertex2_id, type=1):
+        vertex1:Vertex = self.getVertexById(vertex1_id)
+        vertex2:Vertex = self.getVertexById(vertex2_id)
         vertex1.adj.append(vertex2)
         if type == 2:
             vertex2.adj.append(vertex1)
 
     def transpose(self):
         new_g = Graph(self.vertex_cnt, self.road_cnt)
-        for i, v in enumerate(new_g.vertices):
-            for k, u in enumerate(self.vertices):
-                if self.vertices[i] in u.adj:
-                    new_g.addRelation(i, k)
+        for v in self.vertices:
+            for u in self.vertices:
+                if v in u.adj:
+                    new_g.addRelation(v.id, u.id)
         # copy attribute
-        for x in range(self.vertex_cnt):
-            new_g.vertices[x].d = self.vertices[x].d
-            new_g.vertices[x].f = self.vertices[x].f
-
+        for x in self.vertices:
+            new_v = new_g.getVertexById(x.id)
+            new_v.d = x.d
+            new_v.f = x.f
         return new_g
     
     def __str__(self) -> str:
-        s = f"vertex_cnt:{self.vertex_cnt}\nroad_cnt:{self.road_cnt}\n"
-        for i, v in enumerate(self.vertices):
-            s += f"{i+1} -> "
+        s = "________________\n"
+        s += f"vertex_cnt:{self.vertex_cnt}\nroad_cnt:{self.road_cnt}\n"
+        for v in self.vertices:
+            s += f"{v.id} d:{v.d} f:{v.f}-> "
             for u in v.adj:
                 s += str(self.vertices.index(u)+1) + " "
             s += "\n"
+        s += "________________"
         return s

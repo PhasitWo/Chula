@@ -16,23 +16,22 @@ def readInput(filePath:str) -> list[list[int]]:
                 # new city
                 g = Graph(inputs[0], inputs[1])
             else:
-                g.addRelation(inputs[0] - 1, inputs[1] - 1, inputs[2])
+                g.addRelation(inputs[0], inputs[1], inputs[2])
     return testCases
 
 def solve_scc(g:Graph) -> int:
-    scc_cnt = []
+    scc_lst = []
     def DFS(g:Graph):
         for x in g.vertices:
             x.color = Color.WHITE
             x.predecessor = None
         time = 0
         # sort by f time
-        vertices_sort_by_f = g.vertices.copy()
-        vertices_sort_by_f.sort(key=lambda x: x.f, reverse=True)
-        for u in vertices_sort_by_f:
+        g.vertices.sort(key=lambda x: x.f, reverse=True)
+        for u in g.vertices:
             if u.color == Color.WHITE:
-                scc_cnt.append(None)
                 time = DFS_visit(g, u, time)
+                scc_lst.append(extract_scc(g))
     def DFS_visit(g:Graph, u:Vertex, time):
         time += 1
         u.d = time
@@ -45,20 +44,37 @@ def solve_scc(g:Graph) -> int:
         time += 1
         u.f = time
         return time
-    # SCC
+    
+    # Solve
     DFS(g)
     g_t = g.transpose()
-    scc_cnt = []
+    scc_lst = []
     DFS(g_t)
-    if len(scc_cnt) > 1:
-        return 0
-    return 1
+    return scc_lst
 
+def extract_scc(g:Graph):
+    lst = []
+    for v in g.vertices:
+        if v.color == Color.BLACK:
+            lst.append(v.id)
+            v.color = Color.RED
+    return lst
+
+
+
+
+# Driver Code
 testcases = readInput("Algo/lab6/example.txt")
-for case in testcases:
-    print(solve_scc(case))
+for graph in testcases:
+    SCCs = solve_scc(graph)
+    res = "result: "
+    if len(SCCs) > 1:
+        res += "0"
+    else:
+        res += "1"
+    print(res)
+    print("SCCs:")
+    for s in SCCs:
+        print(s)
+ 
 
-
-
-#    vertices_sort_by_f = g.vertices.copy()
-#    vertices_sort_by_f.sort(key=lambda x: x.f, reverse=True)
