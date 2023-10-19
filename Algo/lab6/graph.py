@@ -65,7 +65,7 @@ class Graph:
         for v in self.vertices:
             s += f"{v.id} d:{v.d} f:{v.f}-> "
             for u in v.adj:
-                s += str(self.vertices.index(u)+1) + " "
+                s += str(u.id) + " "
             s += "\n"
         s += "________________"
         return s

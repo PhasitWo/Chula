@@ -88,8 +88,9 @@ def connect_two_scc(g:Graph, scc_1:list[int], scc_2:list[int]):
 def unify(g:Graph) -> int:
     SCCs = solve_scc(g)
     cnt = 0
-    print(SCCs)
     while(len(SCCs) > 1):
+        print(g)
+        print(SCCs)
         # interpret each ssc as a vertex and build a graph (each vertex has id as scc.index + 1)
         k = Graph(len(SCCs), 0)
         # find relations (edges) between all scc
@@ -104,6 +105,7 @@ def unify(g:Graph) -> int:
                     k.addRelation(j+1, i+1)
         # do topoligical sorting
         DFS(k)
+        k.vertices.sort(key=lambda x: x.f, reverse=True)
         # connect least f to max f
         # vertex.id = scc.index + 1 --> scc.index = vertex.id - 1
         least_f_scc = SCCs[k.vertices[-1].id - 1]
@@ -112,14 +114,18 @@ def unify(g:Graph) -> int:
         cnt += 1
         # reevaluate
         SCCs = solve_scc(g)
+    print(g)
     print(SCCs)
     return cnt
 
 # Driver Code
-testcases = readInput("Algo/lab6/example.txt")
-c = testcases[5]
-added_edges_cnt = unify(c)
-print(f"{added_edges_cnt} edges added")
+testcases = readInput("Algo/lab6/6.1.txt")
+c = testcases[0]
+g = Graph(4, 0)
+unify(g)
+
+# added_edges_cnt = unify(c)
+# print(f"{added_edges_cnt} edges added")
 # for graph in testcases:
 #     SCCs = solve_scc(graph)
 #     res = "result: "
