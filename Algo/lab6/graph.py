@@ -46,6 +46,34 @@ class Graph:
         if type == 2:
             vertex2.adj.append(vertex1)
 
+    def countRoad(self):
+        roads = []
+        for i in range(len(self.vertices) - 1):
+            u = self.vertices[i]
+            for j in range(i+1, len(self.vertices)):
+                lst = []
+                v = self.vertices[j]
+                cnt = 0
+                # u --> v
+                added = False
+                if v in u.adj:
+                    cnt += 1
+                if u in v.adj:
+                    cnt += 1
+                    added = True
+                if cnt != 0:
+                    if added:
+                        lst.append(v.id)
+                        lst.append(u.id)
+                    else:
+                        lst.append(u.id)
+                        lst.append(v.id)
+                    lst.append(cnt)
+                    roads.append(lst)
+        return roads
+                
+                    
+
     def transpose(self):
         new_g = Graph(self.vertex_cnt, self.road_cnt)
         for v in self.vertices:
