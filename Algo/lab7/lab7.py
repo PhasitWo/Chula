@@ -58,5 +58,6 @@ def find_path(pi:list[list], vertex_id1, vertex_id2):
 
 
 # Driver Code
-g, q = readInput("Algo/lab7/7.1.txt")
+g, q = readInput("Algo/lab7/example.txt")
 solve_FW(g, q)
+print(str(g.D[0]).replace("]", "\n").replace("[",""))

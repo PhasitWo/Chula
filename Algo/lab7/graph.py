@@ -59,6 +59,9 @@ class Graph:
         e = (vertex1_id, vertex2_id) if vertex1_id < vertex2_id else (vertex2_id, vertex1_id)
         return self.edges[e]
 
+    def addVertex(self, vertex:Vertex):
+        self.vertices.append(vertex)
+
     def addRelation(self, vertex1_id, vertex2_id, weight):
         vertex1:Vertex = self.getVertexById(vertex1_id)
         vertex2:Vertex = self.getVertexById(vertex2_id)
