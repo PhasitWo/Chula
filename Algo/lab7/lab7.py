@@ -33,8 +33,8 @@ def solve_FW(g:Graph, questions:list[tuple]):
         for i in range(n):
             for j in range(n):  
                 x = k-1 # x is intermediate vertex index
-                d[k][i][j] = min(d[k-1][i][j],  d[k-1][i][x]+d[k-1][x][j])
-                if d[k-1][i][j] <= d[k-1][i][x]+d[k-1][x][j]:
+                d[k][i][j] = min(d[k-1][i][j],  max(d[k-1][i][x], d[k-1][x][j]))
+                if d[k-1][i][j] <=  max(d[k-1][i][x], d[k-1][x][j]):
                     pi[k][i][j] = pi[k-1][i][j]
                 else:
                     pi[k][i][j] = pi[k-1][x][j]
@@ -89,4 +89,8 @@ def find_path(pi:list[list], vertex_id1, vertex_id2):
 # Driver Code
 g, q = readInput("Algo/lab7/example.txt")
 solve_extra(g, q)
+for i, d in enumerate(g.D):
+    print(f"D{i}")
+    for line in d:
+        print(str(line).replace("999999", "INF"))
 # print(str(g.D[0]).replace("]", "\n").replace("[",""))
