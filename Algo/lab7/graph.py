@@ -1,8 +1,6 @@
 from enum import Enum
 INF = 999999
-
-def Constant(Enum):
-    INF = 999999
+MINF = -999999
 
 class Vertex:
     def __init__(self, _id):
@@ -49,6 +47,19 @@ class Graph:
                 elif i != j and self.D[0][i][j] < INF:
                     pi0[i][j] = i
         self.Pi.append(pi0)
+
+    def init_D0_extra(self):
+        d0 = [[MINF for y in range(self.vertex_cnt)] for x in range(self.vertex_cnt)]
+        for i in range(0, self.vertex_cnt):
+            u = self.getVertexById(i+1)
+            for j in range(0, self.vertex_cnt):
+                if i == j:
+                    d0[i][j] = 0
+                    continue
+                v = self.getVertexById(j+1)
+                if v in u.adj:
+                    d0[i][j] = self.getWeightById(i+1, j+1)
+        self.D.append(d0)
 
     def getVertexById(self, _id):
         for v in self.vertices:

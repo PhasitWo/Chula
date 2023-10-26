@@ -1,6 +1,8 @@
 from graph import Graph, Vertex
 
 INF = 999999
+MINF = -999999
+
 def readInput(filePath:str) -> (Graph, list[tuple]):
     questions = []
     with open(filePath, "r") as file:
@@ -38,7 +40,34 @@ def solve_FW(g:Graph, questions:list[tuple]):
                     pi[k][i][j] = pi[k-1][x][j]
     # find path for each question
     for u, v in questions:
-        s = f"({u},{v}) -> "
+        s = f"({u},{v}) -> {d[n][u-1][v-1]}"
+        s += str(find_path(pi[n], u, v)) + "\n"
+        print(s)
+    return (d[n], pi[n])
+
+def solve_extra(g:Graph, questions:list[tuple]):
+    n = g.vertex_cnt
+    g.init_D0_extra()
+    g.init_Pi0()
+    d = g.D
+    pi = g.Pi
+    # compute D(u) and Pi(u) from u=1 to n
+    for k in range(1, n+1):
+        new_d = [[MINF for y in range(n)] for x in range(n)]
+        d.append(new_d)
+        new_pi = [[None for y in range(n)] for x in range(n)]
+        pi.append(new_pi)
+        for i in range(n):
+            for j in range(n):  
+                x = k-1 # x is intermediate vertex index
+                d[k][i][j] = max(d[k-1][i][j],  max(d[k-1][i][x], d[k-1][x][j]))
+                if d[k-1][i][j] > max(d[k-1][i][x], d[k-1][x][j]):
+                    pi[k][i][j] = pi[k-1][i][j]
+                else:
+                    pi[k][i][j] = pi[k-1][x][j]
+    # find path for each question
+    for u, v in questions:
+        s = f"({u},{v}) -> {d[n][u-1][v-1]}"
         s += str(find_path(pi[n], u, v)) + "\n"
         print(s)
     return (d[n], pi[n])
@@ -59,5 +88,5 @@ def find_path(pi:list[list], vertex_id1, vertex_id2):
 
 # Driver Code
 g, q = readInput("Algo/lab7/example.txt")
-solve_FW(g, q)
-print(str(g.D[0]).replace("]", "\n").replace("[",""))
+solve_extra(g, q)
+# print(str(g.D[0]).replace("]", "\n").replace("[",""))
