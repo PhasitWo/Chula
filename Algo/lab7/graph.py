@@ -67,8 +67,7 @@ class Graph:
                 return v
             
     def getWeightById(self, vertex1_id, vertex2_id):
-        e = (vertex1_id, vertex2_id) if vertex1_id < vertex2_id else (vertex2_id, vertex1_id)
-        return self.edges[e]
+        return self.edges[(vertex1_id, vertex2_id)]
 
     def addVertex(self, vertex:Vertex):
         self.vertices.append(vertex)
@@ -77,8 +76,7 @@ class Graph:
         vertex1:Vertex = self.getVertexById(vertex1_id)
         vertex2:Vertex = self.getVertexById(vertex2_id)
         vertex1.adj.append(vertex2)
-        vertex2.adj.append(vertex1)
-        e = (vertex1_id, vertex2_id) if vertex1_id < vertex2_id else (vertex2_id, vertex1_id)
+        e = (vertex1_id, vertex2_id)
         self.edges.update({e:weight})
         self.edge_cnt += 1          
     
