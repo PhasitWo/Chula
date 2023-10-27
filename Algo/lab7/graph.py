@@ -54,7 +54,7 @@ class Graph:
             u = self.getVertexById(i+1)
             for j in range(0, self.vertex_cnt):
                 if i == j:
-                    d0[i][j] = 0
+                    d0[i][j] = MINF
                     continue
                 v = self.getVertexById(j+1)
                 if v in u.adj:

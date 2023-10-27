@@ -3,7 +3,7 @@ from graph import Graph, Vertex
 INF = 999999
 MINF = -999999
 
-def readInput(filePath:str) -> (Graph, list[tuple]):
+def readInput(filePath:str, extra=True) -> (Graph, list[tuple]):
     questions = []
     with open(filePath, "r") as file:
         cnt = 0
@@ -87,10 +87,13 @@ def find_path(pi:list[list], vertex_id1, vertex_id2):
 
 
 # Driver Code
-g, q = readInput("Algo/lab7/example.txt")
-solve_extra(g, q)
-for i, d in enumerate(g.D):
-    print(f"D{i}")
-    for line in d:
-        print(str(line).replace("999999", "INF"))
-# print(str(g.D[0]).replace("]", "\n").replace("[",""))
+for file in ["7.1.txt", "7.2.txt", "7.3.txt", "7.4.txt", "7_extra1.txt", "7_extra2.txt"]: 
+    g, q = readInput("Algo/lab7/" + file)
+    print(file)
+    solve_FW(g, q)
+    print(f"PIn")
+    # for line in g.Pi[-1]:
+    #     print(str(line).replace("999999", "INF").strip("[").strip("]").replace(",","\t"))
+    # print("_"*20)
+    # print(str(g.D[0]).replace("]", "\n").replace("[","").lstrip(",").replace("999999", "0"))
+
