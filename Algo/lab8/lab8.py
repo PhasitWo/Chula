@@ -1,5 +1,4 @@
 def recur(arr:list[int], ans):
-    print(len(arr))
     if len(arr) < 3:
         # option 1
         # for num in arr:
@@ -33,9 +32,9 @@ def check(arr:list[int]):
             return
     print("CORRECT!!!")
 
-for m in range(1, 11):
-    question = [i for i in range(m)]
-    new = recur(question, [])
-    print(new)
-    check(new)
+N = 5
+question = [i for i in range(N+1)]
+new = recur(question, [])
+print(f"n={N}\n",new, sep="")
+check(new)
 
