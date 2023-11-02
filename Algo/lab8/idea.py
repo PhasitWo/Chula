@@ -1,25 +1,27 @@
+import math
+
 def notDAC(arr:list[int]):
     new = arr.copy()
-    for i in range(len(arr)):
-        t = i % 4
-        rearrange(arr, new, i, t)
+    m = len(arr)
+    for i in range(0, m):
+        rearrange(arr, new, i)
+        print(new)
     return new
 
-def rearrange(old:list, new:list, i, t):
-    x1 = i
-    x3 = i + 2
-    while (x3 < len(old)):
-        x1_index = new.index(x1)
-        x3_index = new.index(x3)
-        if t == 0 or t == 1:
-            new.pop(x3_index)
-            x1_index = new.index(x1)
-            new.insert(x1_index+1, x3)
-        else:
-            new.pop(x3_index)
-            x1_index = new.index(x1)
-            new.insert(x1_index-1, x3)
-        x3 += 2
+def rearrange(old:list, new:list, i):
+    candidate = []
+    x1 = new[i]
+    x3_index = i + 2
+    while (x3_index < len(old)):
+        x3 = new[x3_index]
+        if (x1 + x3) % 2 == 0:
+            candidate.append(x3)
+        x3_index += 2
+    for num in candidate:
+        print(num)
+        can_index = new.index(num)
+        new.pop(can_index)
+        new.insert(i+1, num)
 
 
 def check(arr:list[int]):
@@ -43,7 +45,7 @@ def check(arr:list[int]):
             return
     print("CORRECT!!!")
 
-N = 9
+N = 7
 q = [i for i in range(N+1)]
 print(q)
 new = notDAC(q)
