@@ -1,36 +1,25 @@
 def notDAC(arr:list[int]):
     new = arr.copy()
     for i in range(len(arr)):
-        type_ = 0 if i % 2 == 0 else 1
-        rearrange(arr, new, i, type_)
+        t = i % 4
+        rearrange(arr, new, i, t)
     return new
-def rearrange(old:list, new:list, i, type_):
-    x2 = i
-    x1 = x2-1
-    x3 = x2+1
-    l_candidate = None
-    r_candidate = None
-    while(x1>-1 and x3<len(old)):
+
+def rearrange(old:list, new:list, i, t):
+    x1 = i
+    x3 = i + 2
+    while (x3 < len(old)):
         x1_index = new.index(x1)
         x3_index = new.index(x3)
-        if x1_index < i and i < x3_index:
-            l_candidate = x1_index
-            r_candidate = x3_index
-        if x3_index < i and i < x1_index:
-            l_candidate = x3_index
-            r_candidate = x1_index
-        x1 -= 1
-        x3 += 1
-    if l_candidate != None and r_candidate != None:
-        x2_index = new.index(x2)
-        if type_ == 0:
-            temp = new[l_candidate]
-            new[l_candidate] = x2
-            new[x2_index] = temp
+        if t == 0 or t == 1:
+            new.pop(x3_index)
+            x1_index = new.index(x1)
+            new.insert(x1_index+1, x3)
         else:
-            temp = new[r_candidate]
-            new[r_candidate] = x2
-            new[x2_index] = temp
+            new.pop(x3_index)
+            x1_index = new.index(x1)
+            new.insert(x1_index-1, x3)
+        x3 += 2
 
 
 def check(arr:list[int]):
@@ -54,7 +43,9 @@ def check(arr:list[int]):
             return
     print("CORRECT!!!")
 
-q = [i for i in range(6)]
+N = 9
+q = [i for i in range(N+1)]
+print(q)
 new = notDAC(q)
 print(new)
 check(new)

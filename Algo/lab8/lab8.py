@@ -32,7 +32,7 @@ def check(arr:list[int]):
             return
     print("CORRECT!!!")
 
-N = 5
+N = 8
 question = [i for i in range(N+1)]
 new = recur(question, [])
 print(f"n={N}\n",new, sep="")
