@@ -17,7 +17,7 @@ def check(arr:list[int]):
             return False
     return True
 
-q = [i for i in range(100)]
+q = [i for i in range(37)]
 left = q[0::2]
 permute_left = list(itertools.permutations(left))
 right = q[1::2]

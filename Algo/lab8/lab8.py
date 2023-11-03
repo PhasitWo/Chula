@@ -11,30 +11,27 @@ def recur(arr:list[int], ans):
     recur(arr[1::2], ans) # right = items that index are odd
     return ans
 # T(n) = 2T(n/2) + n ????
-def check(arr:list[int]):
+def check_all(arr:list[int]):
+    flag = True
     for num_index, num in enumerate(arr):
-        l_num = num-1
-        r_num = num+1
-        flag = True
-        while(l_num>-1 and r_num<len(arr)):
-            left_index = arr.index(l_num)
-            right_index = arr.index(r_num)
-            if left_index < num_index and num_index < right_index:
+        x1_index = num_index - 1
+        x3_index = num_index + 1
+        while(x1_index>-1 and x3_index<len(arr)):
+            x1 = arr[x1_index]
+            x3 = arr[x3_index]
+            if (x1+x3)/2 == num:
                 flag = False
                 break
-            if right_index < num_index and num_index < left_index:
-                flag = False
-                break
-            l_num -= 1
-            r_num += 1
+            x1_index -= 1
+            x3_index += num_index + 1
         if not flag:
-            print("INCORRECT", num)
-            return
-    print("CORRECT!!!")
+            print(num)
+            return False
+    return True
 
-N = 19
-question = [i for i in range(N+1)]
+N = 8
+question = [i for i in range(1, N+1)]
 new = recur(question, [])
 print(f"n={N}\n",new, sep="")
-check(new)
+print(check_all(new))
 

@@ -1,4 +1,4 @@
-def check(arr, i):
+def wun(arr, i):
     x1_index = i
     x3_index = i + 1
     x1 = arr[x1_index]
@@ -19,16 +19,18 @@ def check(arr, i):
                     arr[x2_index] = arr[x3_index]
                     arr[x3_index] = temp
                     swap = True
+                    x3_index = i + 1
+                    continue
                 else:
                     temp = arr[x2_index]
                     arr[x2_index] = arr[x1_index]
                     arr[x1_index] = temp
                     swap = True
-                    return swap
+                    x3_index = i + 1
+                    continue
         x3_index += 1
     return swap
     
-
 def check_all(arr:list[int]):
     flag = True
     for num_index, num in enumerate(arr):
@@ -47,24 +49,9 @@ def check_all(arr:list[int]):
             return False
     return True
 
-def wun(arr):
-    i = 0
-    while(i<len(arr)):
-        swap = check(arr, i)
-        if swap:
-            i = 0
-            continue
-        i += 1
-
 # driver code
-N = 35
-arr = [x for x in range(N+1)]
-ans = []
-left = arr[0::2]
-right = arr[1::2]
-wun(left)
-wun(right)
-ans += left
-ans += right
-print(ans)
-print(check_all(ans))
+
+arr = [x for x in range(1, 100+1)]
+wun(arr, 0)
+print(arr)
+print(check_all(arr))
