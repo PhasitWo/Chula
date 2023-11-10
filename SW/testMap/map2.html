@@ -5,6 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BusveryWhere</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/datepicker3.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300&family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="js/respond.min.js"></script>
 
     <style type="text/css">
         html, body {
@@ -104,6 +109,7 @@
         }
     </style>
     <script type="text/javascript" src="https://api.longdo.com/map/?key=fe75c23350d22e5b0ff781a28a09aaf5"></script>
+    <script src="map.js"></script>
 </head>
 
 <body onload="init()">
@@ -131,10 +137,8 @@
                 <h3>ฉันอยากไปที่:</h3>
                 <i class="microphone-icon fa fa-microphone" onclick="startListening('destination')"></i>
             </label>
-            <h4><input type="text" id="destination" list="places-list"><br><br>
+            <h4><input autocomplete="off" type="text" id="destination" list="places-list"><br><br>
                 <datalist id="places-list">
-                    <!-- <option value="A">  
-                    <option value="B"> -->
                   </datalist>
             <div id="voice-result"></div>
             <button onclick="findRoute()">ค้นหาเส้นทาง</button>
@@ -176,7 +180,7 @@
         }
 
     </script>
-    <script src="map.js"></script>
+    
 </body>
 
 </html>

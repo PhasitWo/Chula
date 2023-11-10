@@ -1,6 +1,8 @@
+import time
+
 def compute_prefix(P:str) -> list[int]:
     m = len(P)
-    pi = [None] * m
+    pi = [-1] * m
     pi[0] = -1
     k = -1
     for q in range(1, m): # 1 to m-1
@@ -44,6 +46,7 @@ def KMP_matcher(t, p):
     return ans
 
 def KMP_matcher_extra(t, p):
+    start  = time.time_ns() 
     n = len(t)
     m = len(p)
     pi = compute_prefix(p)
@@ -77,7 +80,8 @@ def KMP_matcher_extra(t, p):
             q = pi[q] # find next match
         i = (i + 1) % n
         cnt += 1
- 
+    end = time.time_ns() 
+    print(end - start)
     return ans
 
 def naive(t, p):
@@ -103,6 +107,7 @@ def naive(t, p):
     return ans
 
 def naive_extra(t, p):
+    start = time_nanosec = time.time_ns() 
     n = len(t)
     m = len(p)
     ans = []
@@ -122,14 +127,26 @@ def naive_extra(t, p):
                 break
         if found:
             ans.append(f"{(n-s)} RL")
+    end = time_nanosec = time.time_ns()
+    print(end-start)
     return ans
-# ถ้า extra คือท้าย text ต่อกับต้น text แบบ circular ให้เปลี่ยน for loop
-# เป็น while loop โดยจะทำแค่จำนวนรอบ cnt = text.length + pattern.length - 1
-# ถ้าทำเกินกว่านั้นจะเริ่มรอบใหม่เหมือนเดิม
-text = "YXYXYYXYXYYX"
-pattern = "XYXY"
-# ans = naive(text, pattern)
+
+def readInput(file_path):
+    with open(file_path, "r") as openfile:
+        sigma = openfile.readline().strip()
+        pattern_length, text_length = list(map(int, openfile.readline().strip().split()))
+        pattern = "".join(openfile.readline().strip().split())
+        text = "".join(openfile.readline().strip().split())
+    return text, pattern
+
+text, pattern = readInput("Algo/lab9/9.2.txt")
 ans = naive_extra(text, pattern)
+# ans = naive(text, pattern)
+ans = KMP_matcher_extra(text, pattern)
+# ans = KMP_matcher_extra(text, pattern)
 print(len(ans))
 for a in ans:
     print(a)
+
+# 800865000
+# 686448000
