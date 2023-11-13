@@ -1,11 +1,11 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from skimage.io import imread, imsave
+from skimage.io import imread
 from skimage.color import rgb2hsv, hsv2rgb
+import skimage
 
 def slice_color_cube(file_path: str, color: tuple[list], w: int):
-    img = imread(file_path)
-    new_img = img.copy()
+    img = imread(file_path) 
+    new_img = skimage.util.img_as_float32(img) # normalize
     height, width, _ = img.shape
     for x in range(height):
         for y in range(width):
@@ -17,7 +17,9 @@ def slice_color_cube(file_path: str, color: tuple[list], w: int):
                     in_cube = False
                     break
             if not in_cube:
-                new_img[x, y] = (127, 127, 127)
+                new_img[x, y] = (0.5, 0.5, 0.5)
+    # convert to 8-bit image
+    new_img = skimage.util.img_as_ubyte(new_img)
     fig, ax = plt.subplots(1,2,figsize=(15,5))
     ax[0].imshow(img)
     ax[0].set_title('OG', fontsize=15)
@@ -27,7 +29,7 @@ def slice_color_cube(file_path: str, color: tuple[list], w: int):
     plt.savefig("ImageProcessing/assign5/output/" + f'{file_name}_slice_cube')
     plt.show()
 
-slice_color_cube("ImageProcessing/assign5/oranges.jpg", (240, 140, 0) , 150)
+# slice_color_cube("ImageProcessing/assign5/oranges.jpg", (0.9411754706, 0.5490196078, 0) , 0.588235291)
 
 def slice_color_HSV(file_path: str, h_range: tuple[int], s_range: tuple[int], v_range: tuple[int]):
     img = imread(file_path)
