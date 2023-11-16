@@ -1,44 +1,45 @@
-import itertools, networkx, matplotlib.pyplot as plt
-from q1 import check_vertex_cover
+import networkx, matplotlib.pyplot as plt
 
-def readInput(file_path:str) -> (int, list):
+def readInput(file_path:str) -> networkx.Graph:
     with open(file_path, "r") as openfile:
-        clause_cnt = int(openfile.readline().strip())
-        clause_lst = []
+        matrix = []
         for line in openfile:
             row = list(map(int, line.strip().split()))
-            clause_lst.append(row)
-        return clause_cnt, clause_lst
-    
-def reduce_3SAT_to_VC(clause_lst:list[int]):
+            matrix.append(row)
     g = networkx.Graph()
-    # find variables
-    variables = set()
-    for clause in clause_lst:
-        x = {abs(i) for i in clause.copy()}
-        variables.update(x)
-    # create variable pair
-    for var in variables:
-        g.add_edge("vp/"+str(var), "vp/"+str(-var))
-    for index, clause in enumerate(clause_lst):
-        # create clause triangle
-        prefix = f"ct{index}/"
-        g.add_edge(prefix+str(clause[0]), prefix+str(clause[1]))
-        g.add_edge(prefix+str(clause[1]), prefix+str(clause[2]))
-        g.add_edge(prefix+str(clause[2]), prefix+str(clause[0]))
-        # connect CT and VP
-        g.add_edge(prefix+str(clause[0]), "vp/"+str(clause[0]))
-        g.add_edge(prefix+str(clause[1]), "vp/"+str(clause[1]))
-        g.add_edge(prefix+str(clause[2]), "vp/"+str(clause[2]))
-    matrix = networkx.to_numpy_array(g)
-    k = len(variables) + 2*len(clause_lst)
-    # can use this func in q1 to find solution
-    # ans = check_vertex_cover(matrix, k)
-    print(g.number_of_nodes())
-    print(k)
-    print(matrix)
-    # networkx.draw(g, with_labels = True)
-    # plt.show()
+    for i in range(len(matrix)):
+        for j in range(i+1, len(matrix)):
+            if matrix[i][j] == 1:
+                g.add_edge(i, j)
+    return g
 
-clause_cnt, clause_lst = readInput("Algo/lab10/sample3.txt")
-reduce_3SAT_to_VC(clause_lst)
+# www.geeksforgeeks.org/introduction-and-approximate-solution-for-vertex-cover-problem/
+def approx_VC(g: networkx.Graph):
+    q = g.copy()
+    result = []
+    while(q.number_of_edges() != 0):
+        # pick any edge
+        i, j = list(q.edges)[0]
+        # i, j = q.edges[0]
+        result.append(i)
+        result.append(j)
+        for e in q.edges:
+            if e[0] == i or e[0] == j:
+                q.remove_edge(e[0], e[1])
+            elif e[1] == i or e[1] == j:
+                q.remove_edge(e[0], e[1])
+    # coloring
+    color = []
+    for node in g:
+        if node in result:
+            color.append("red")
+        else:
+            color.append("green")
+    networkx.draw(g, with_labels = True, node_color = color)
+    plt.show()
+    print(result)
+    print(len(result))
+    return result
+
+g = readInput("Algo/lab10/sample2.txt")
+approx_VC(g)

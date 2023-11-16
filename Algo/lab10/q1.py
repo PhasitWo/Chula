@@ -41,7 +41,7 @@ def display(matrix: list[list[int]]) -> None:
 
 # driver code
 if __name__ == '__main__' :
-    matrix, k = readInput("Algo/lab10/sample2.txt")
+    matrix, k = readInput("Algo/lab10/sample.txt")
     ans = check_vertex_cover(matrix, k)
     display(matrix)
     if len(ans) != 0:
