@@ -18,16 +18,22 @@ def approx_VC(g: networkx.Graph):
     q = g.copy()
     result = []
     while(q.number_of_edges() != 0):
-        # pick any edge
-        i, j = list(q.edges)[0]
-        # i, j = q.edges[0]
+        # pick node that has the most degree
+        deg = list(q.degree)
+        deg.sort(key= lambda x : x[1], reverse=True)
+        print(deg, "\n")
+        i = deg[0][0]
+        m = deg[0][1]
+        for x in deg:
+            if x[0] == i:
+                continue
+            if x[1] == m:
+                i = x[0]
+        print(i)
         result.append(i)
-        result.append(j)
-        for e in q.edges:
-            if e[0] == i or e[0] == j:
-                q.remove_edge(e[0], e[1])
-            elif e[1] == i or e[1] == j:
-                q.remove_edge(e[0], e[1])
+        adjNode = list(q[i].keys())
+        for j in adjNode:
+            q.remove_edge(i, j)
     # coloring
     color = []
     for node in g:
@@ -41,5 +47,5 @@ def approx_VC(g: networkx.Graph):
     print(len(result))
     return result
 
-g = readInput("Algo/lab10/sample2.txt")
+g = readInput("Algo/lab10/testcase/2.3.txt")
 approx_VC(g)

@@ -28,22 +28,27 @@ def check_vertex_cover(matrix: list[list[int]], k:int) -> list:
             ans.append(c)
     return ans
 
-def display(matrix: list[list[int]]) -> None:
+def display(matrix: list[list[int]], result) -> None:
     g = networkx.Graph()
     for i in range(len(matrix)):
         for j in range(i+1, len(matrix)):
             if matrix[i][j] == 1:
                 g.add_edge(i+1, j+1)
-    networkx.draw(g, with_labels = True)
-    print(networkx.to_numpy_array(g))
+    color = []
+    for node in g:
+        if node in result[0]:
+            color.append("red")
+        else:
+            color.append("green")
+    networkx.draw(g, with_labels = True, node_color = color)
     plt.show()
 
 
 # driver code
 if __name__ == '__main__' :
-    matrix, k = readInput("Algo/lab10/sample.txt")
+    matrix, k = readInput("Algo/lab10/testcase/1.5.txt")
     ans = check_vertex_cover(matrix, k)
-    display(matrix)
+    display(matrix, ans)
     if len(ans) != 0:
         print("Yes")
         [print(a) for a in ans]

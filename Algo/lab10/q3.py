@@ -1,5 +1,5 @@
 import networkx, matplotlib.pyplot as plt
-from q1 import check_vertex_cover
+from q1 import check_vertex_cover, display
 
 def readInput(file_path:str) -> (int, list):
     with open(file_path, "r") as openfile:
@@ -34,11 +34,12 @@ def reduce_3SAT_to_VC(clause_lst:list[int]):
     k = len(variables) + 2*len(clause_lst)
     # can use this func in q1 to find solution
     # ans = check_vertex_cover(matrix, k)
+    # display(matrix, ans)
     print(g.number_of_nodes())
     print(k)
     print(matrix)
     # networkx.draw(g, with_labels = True)
     # plt.show()
 
-clause_cnt, clause_lst = readInput("Algo/lab10/sample3.txt")
+clause_cnt, clause_lst = readInput("Algo/lab10/testcase/3.2.txt")
 reduce_3SAT_to_VC(clause_lst)
