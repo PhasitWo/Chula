@@ -1,0 +1,6 @@
+1. growing with rgb cube is not working
+    as it does not grow on darker color of itself
+2. growing with HSV + Color Slice has a potential
+3. edge detection could be convincing
+    scan on both axis (after edge detection is done) and find the range that edges are gathered
+4. split and merge can be useful if we use this method before applying 2 or 3
