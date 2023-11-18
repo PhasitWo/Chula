@@ -21,15 +21,7 @@ def approx_VC(g: networkx.Graph):
         # pick node that has the most degree
         deg = list(q.degree)
         deg.sort(key= lambda x : x[1], reverse=True)
-        print(deg, "\n")
         i = deg[0][0]
-        m = deg[0][1]
-        for x in deg:
-            if x[0] == i:
-                continue
-            if x[1] == m:
-                i = x[0]
-        print(i)
         result.append(i)
         adjNode = list(q[i].keys())
         for j in adjNode:
