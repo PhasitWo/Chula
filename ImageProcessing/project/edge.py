@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from skimage.io import imread
-from skimage.color import rgb2hsv, hsv2rgb, rgb2gray
+from skimage.color import rgb2gray
 import skimage
 from scipy.signal import find_peaks
 import numpy as np
@@ -41,7 +41,10 @@ def extract_brand(original_img, hdistance, min_hheight, vdistance, min_vheight, 
     print(vpeaks)
     print(vinfo["peak_heights"])
 
-    new_img = original_img[hpeaks[0]-padding:hpeaks[-1]+padding, vpeaks[0]-padding:vpeaks[-1]+padding]
+    new_img = original_img[
+        max(hpeaks[0]-padding, 0):min(hpeaks[-1]+padding, img.shape[0]), 
+        max(vpeaks[0]-padding, 0):min(vpeaks[-1]+padding, img.shape[1])
+        ]
     fig, ax = plt.subplots(2,2,figsize=(15,8))
     ax[0][0].imshow(img)
     ax[0][1].imshow(new_img)
@@ -55,9 +58,19 @@ def extract_brand(original_img, hdistance, min_hheight, vdistance, min_vheight, 
     return new_img
 
 # Driver code
-img = imread("ImageProcessing/project/sample2.jpg")
-img = extract_brand(img, hdistance=100, min_hheight=400, vdistance=100 , min_vheight=50, padding=-100)
-img = extract_brand(img, hdistance=20, min_hheight=300, vdistance=50 , min_vheight=50, padding=200)
+original = imread("ImageProcessing/project/sample3.jpg")
+img = extract_brand(original, hdistance=100, min_hheight=400, vdistance=100 , min_vheight=50, padding=-20)
+img = extract_brand(img, hdistance=20, min_hheight=200, vdistance=50 , min_vheight=70, padding=100)
+
+
+
+# sample 1
+# min_hheight=400, vdistance=100 , min_vheight=50, padding=-200
+# hdistance=20, min_hheight=200, vdistance=50 , min_vheight=50, padding=100
+# sample 2
+# hdistance=100, min_hheight=400, vdistance=100 , min_vheight=50, padding=-100
+# hdistance=20, min_hheight=200, vdistance=50 , min_vheight=50, padding=100
+
 
 
 # import pickle
