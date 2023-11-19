@@ -32,11 +32,15 @@ def extract_brand(original_img, hdistance, min_hheight, vdistance, min_vheight, 
         verticals.append(cnt)
 
     horizons = np.array(horizons)
+    max_ = max(horizons)
+    horizons = np.array([int(v/max_*100) for v in horizons]) # normalize
     hpeaks, hinfo = find_peaks(horizons, distance=hdistance, height=min_hheight)
     print(hpeaks)
     print(hinfo["peak_heights"])
 
     verticals = np.array(verticals)
+    max_ = max(verticals)
+    verticals = np.array([int(v/max_*100) for v in verticals]) # normalize
     vpeaks, vinfo = find_peaks(verticals, distance=vdistance, height=min_vheight)
     print(vpeaks)
     print(vinfo["peak_heights"])
@@ -59,17 +63,11 @@ def extract_brand(original_img, hdistance, min_hheight, vdistance, min_vheight, 
 
 # Driver code
 original = imread("ImageProcessing/project/sample3.jpg")
-img = extract_brand(original, hdistance=100, min_hheight=400, vdistance=100 , min_vheight=50, padding=-20)
-img = extract_brand(img, hdistance=20, min_hheight=200, vdistance=50 , min_vheight=70, padding=100)
+img = extract_brand(original, hdistance=100, min_hheight=20, vdistance=100 , min_vheight=30, padding=-70)
+img = extract_brand(img, hdistance=100, min_hheight=30, vdistance=50 , min_vheight=30, padding=100)
+# this params work with 3 samples
 
 
-
-# sample 1
-# min_hheight=400, vdistance=100 , min_vheight=50, padding=-200
-# hdistance=20, min_hheight=200, vdistance=50 , min_vheight=50, padding=100
-# sample 2
-# hdistance=100, min_hheight=400, vdistance=100 , min_vheight=50, padding=-100
-# hdistance=20, min_hheight=200, vdistance=50 , min_vheight=50, padding=100
 
 
 
@@ -78,5 +76,4 @@ img = extract_brand(img, hdistance=20, min_hheight=200, vdistance=50 , min_vheig
 #     verticals = pickle.load(file)
 # with open("ImageProcessing/project/pickleX", "rb") as file:
 #     horizons = pickle.load(file)
-
 # fig, ax = skimage.filters.try_all_threshold(img, figsize=(10, 8), verbose=False)
