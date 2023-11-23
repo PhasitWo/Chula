@@ -62,7 +62,7 @@ def extract_brand(original_img, hdistance, min_hheight, vdistance, min_vheight, 
     return new_img
 
 # Driver code
-original = imread("ImageProcessing/project/sample3.jpg")
+original = imread("ImageProcessing/project/sample2.jpg")
 img = extract_brand(original, hdistance=100, min_hheight=20, vdistance=100 , min_vheight=30, padding=-70)
 img = extract_brand(img, hdistance=100, min_hheight=30, vdistance=50 , min_vheight=30, padding=100)
 # this params work with 3 samples
