@@ -50,22 +50,22 @@ def extract_brand(original_img, hdistance, min_hheight, vdistance, min_vheight, 
         max(vpeaks[0]-padding, 0):min(vpeaks[-1]+padding, img.shape[1])
         ]
     fig, ax = plt.subplots(2,2,figsize=(15,8))
-    ax[0][0].imshow(img)
-    ax[0][1].imshow(new_img)
-    ax[1][0].plot(horizons)
-    ax[1][0].plot(hpeaks, horizons[hpeaks], "x")
-    ax[1][0].title.set_text("horizon")
-    ax[1][1].plot(verticals)
-    ax[1][1].plot(vpeaks, verticals[vpeaks], "x")
-    ax[1][1].title.set_text("vertical")
+    ax[1][0].imshow(img, cmap="gray")
+    ax[1][1].imshow(new_img)
+    ax[1][1].title.set_text("cropped image")
+    ax[0][0].plot(horizons)
+    ax[0][0].plot(hpeaks, horizons[hpeaks], "x")
+    ax[0][0].title.set_text("horizon")
+    ax[0][1].plot(verticals)
+    ax[0][1].plot(vpeaks, verticals[vpeaks], "x")
+    ax[0][1].title.set_text("vertical")
     plt.show()
     return new_img
 
 # Driver code
-original = imread("ImageProcessing/project/sample2.jpg")
-img = extract_brand(original, hdistance=100, min_hheight=20, vdistance=100 , min_vheight=30, padding=-70)
+original = imread("ImageProcessing/project/sample5.jpg")
+img = extract_brand(original, hdistance=100, min_hheight=30, vdistance=100 , min_vheight=30, padding=-70)
 img = extract_brand(img, hdistance=100, min_hheight=30, vdistance=50 , min_vheight=30, padding=100)
-# this params work with 3 samples
 
 
 
