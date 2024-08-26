@@ -1,0 +1,27 @@
+-The distributed architecture
+    Divide and conquer: แบ่งระบบเป็น client และ server ซึ่งทั้งสองสามารถพัฒนาแยกกันได้ 
+    Increase cohesion: server มี service ให้ client ซึ่งภายใต้แต่ละ service ประกอบด้วย class ต่างๆ ที่ทำงานเกี่ยวข้องกัน
+    Reduce coupling: มีช่องทางการสื่อสารแค่ช่องทางเดียวคือระหว่าง client กับ server
+    Increase abstraction: การแบ่งเป็น client กับ server แยกออกจากกันชัดเจนทำให้มีระดับ abstraction ที่สูงนั่นคือ client ทำงานผ่าน API ที่ server มีให้ โดยไม่จำเป็นต้องรู้ว่าภายใน server ทำงานอย่างไร
+-The broker architecture
+    Divide and conquer: remote object สามารถพัฒนาแยกกันได้
+    Increase reusability: สามารถออกแบบ remote object ให้ระบบอื่นๆ ใช้ได้ด้วย
+    Design for flexibility: สามารถ update ตัว broker ได้หรือตัว proxy ก็สามารถสื่อสารกับ remote object อื่นๆได้
+    Design for portability: สามารถสร้าง client บน platform ต่างๆ แล้วใช้ broker และ remote object บนอีก platform ได้
+-The transaction-processing architecture
+    Divide and conquer: handler แต่ละตัวสามารถแยกพัฒนาได้
+    Increase cohesion: handler แต่ละตัวมีความเป็นอันหนึ่งอันเดียวกันในตัวมันเอง
+    Reduce coupling: การแยก dispatcher กับ handler ทำให้มี coupling ที่ต่ำ นั่นคือต่อให้มีการแก้ไข dispatcher ก็ไม่ได้ส่งผลกระทบต่อ handler
+    Design for flexibility: สามารถเพิ่ม handler ตัวใหม่ได้เลย
+    Design defensively: สามารถมี assertion checking ใน dispatcher และ handler เช่น handler ตรวจสอบความถูกต้องของ input
+-The pipe-and-filter architecture
+    Divide and conquer: แต่ละ process พัฒนาแยกกันได้
+    Increase cohesion: process แต่ละตัวมีความเป็นอันหนึ่งอันเดียวกันในตัวมันเอง
+    Reduce coupling: แต่ละ process มีเพียง 1 input (เชื่อมกับ process ก่อนหน้า) และ 1 output (เชื่อม process ถัดไป)
+    Increase abstraction: pipeline component แต่ละตัวไม่ได้เปิดเผยรายละเอียดให้ตัวอื่นๆ
+    Increase reusability: แต่ละ process สามารถนำไปใช้ซ้ำได้ในบริบทอื่นๆ
+-The MVC architecture
+    Divide and conquer: Model, View, Controller สามารถพัฒนาแยกกันได้
+    Reduce coupling: ช่องทางการสื่อสารกันระหว่าง component ทั้ง 3 นั้นน้อย
+    Design for flexibility: สามารถเปลี่ยน UI ได้ง่ายๆ เพียงเปลี่ยน View หรือ Controller
+    Design for testability: สามารถ test แอปพลิเคชันแยกจาก UI ได้
